@@ -1,7 +1,6 @@
 import pygame
 import random
 import os
-import pymorphy2
 
 
 
@@ -23,6 +22,15 @@ obsh_comp = 0
 
 theme = 0
 level = 0
+with open('statistic.txt', 'rt') as f:
+    r = f.read()
+    arr = [float(x) for x in r.split()]
+    time = arr[0]
+    comp = arr[1]
+    igr = arr[2]
+    best_comp = arr[3]
+    best_igr = arr[4]
+    lenqth = arr[5]
 
 def load_image(name):
     fullname = os.path.join('data', name)
@@ -131,6 +139,7 @@ class Hokkey:
         mm = time_1 // 60
         time_1 %= 60
         ss = time_1 // 1
+
 
         text = font.render(
             "В игре вы провели: " + str(int(hh)) + ':' + str(int(mm)).rjust(2, '0') + ':' +
