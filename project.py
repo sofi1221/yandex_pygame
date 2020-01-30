@@ -1,39 +1,50 @@
 import pygame
 import random
-
-pygame.init()
-size = width, height = 1100, 700
-screen = pygame.display.set_mode(size)
-pos = (400, 350 + 175)
-pos_vrag = (400, 175)
-pos_shaiba = (400, 350)
-x = 0
-v_x = 0
-v_y = 0
-n = 0
-
-schet_igr = 0
-schet_comp = 0
-obsh_igr = 0
-obsh_comp = 0
-
-theme = 0
-level = 0
-
-screen.fill((87, 87, 87))
+import os
+import pymorphy2
 
 
-class Hokkey:  # аэрохокей
-    pass
+class Hockey:
+    def draw(self):
+        pass
+
+    def otbit(self):
+        pass
+
+    def kraya(self):
+        pass
+
+    def vorota(self):
+        pass
+
+    def vozvrat(self):
+        pass
 
 
 class Board:
-    pass
     # создание поля
+    def __init__(self, width, height):
+        pass
+
+    # настройка внешнего вида
+    def set_view(self, left, top, cell_size):
+        pass
+
+    def render(self):
+        pass
 
 
-class Minesweeper(Board):  # сапер
-    pass
+class Minesweeper(Board):
+    def __init__(self, x, y):
+        pass
+
+    def drawing(self):
+        pass
+
+    def open_cell(self, pos, q):
+        pass
+
+
 
 
 # hokkey.draw()
@@ -42,9 +53,9 @@ running = True
 clock = pygame.time.Clock()
 while running:
     for event in pygame.event.get():
+        all_sprites.update(event)
         if event.type == pygame.QUIT:
             running = False
-
     pygame.display.flip()
     clock.tick(25)
 # print(time, comp, igr)
