@@ -1,7 +1,13 @@
 import pygame
 import random
 import os
+import pymorphy2
 
+
+def load_image(name):
+    fullname = os.path.join('data', name)
+    image = pygame.image.load(fullname).convert()
+    return image
 
 
 pygame.init()
@@ -14,6 +20,10 @@ x = 0
 v_x = 0
 v_y = 0
 n = 0
+stroka = pymorphy2.MorphAnalyzer().parse('метр')[0]
+pygame.display.set_caption("4k3s")
+image_flag = pygame.image.load('dark.png').convert_alpha()
+pygame.display.set_icon(image_flag)
 
 schet_igr = 0
 schet_comp = 0
@@ -22,20 +32,7 @@ obsh_comp = 0
 
 theme = 0
 level = 0
-with open('statistic.txt', 'rt') as f:
-    r = f.read()
-    arr = [float(x) for x in r.split()]
-    time = arr[0]
-    comp = arr[1]
-    igr = arr[2]
-    best_comp = arr[3]
-    best_igr = arr[4]
-    lenqth = arr[5]
 
-def load_image(name):
-    fullname = os.path.join('data', name)
-    image = pygame.image.load(fullname).convert()
-    return image
 x_x = 0
 screen.fill((87, 87, 87))
 
@@ -46,6 +43,64 @@ best_comp = 0
 best_igr = 0
 lenqth = 0
 
+f_saper = 0
+with open('data/statistic.txt', 'rt') as f:
+    r = f.read()
+    arr = [float(x) for x in r.split()]
+    time = arr[0]
+    comp = arr[1]
+    igr = arr[2]
+    best_comp = arr[3]
+    best_igr = arr[4]
+    lenqth = arr[5]
+
+font = pygame.font.Font(None, 296)
+color1 = (255, 13, 0)
+color = (255, 255, 255)
+text = font.render("WIN", 1, color)
+text_x_win = 500 // 2 - text.get_width() // 2
+text_y_win = 350 // 2 - text.get_height() // 2
+image_win = pygame.Surface((500, 350))
+image_win.set_alpha(128)
+pygame.draw.rect(image_win, color1, (0, 0, 500, 350), 0)
+image_win.blit(text, (text_x_win, text_y_win))
+
+color1 = (51, 61, 255)
+image_lose = pygame.Surface((500, 350))
+image_lose.set_alpha(128)
+pygame.draw.rect(image_lose, color1, (0, 0, 500, 350), 0)
+image_lose.blit(text, (text_x_win, text_y_win))
+
+f_win = 0
+y_win = 700
+
+f_lose = 0
+y_lose = -350
+
+all_sprites = pygame.sprite.Group()
+
+
+def test(pos, r, text):
+    color = (0, 255, 0)
+    image_instr = pygame.Surface((1100, 700))
+    image_instr.fill((0, 0, 0))
+    pygame.draw.circle(image_instr, color, (pos), r)
+    font = pygame.font.Font(None, 88)
+    if theme == 1:
+        text = font.render(text, 1, (100, 255, 100))
+    else:
+        text = font.render(text, 1, (255, 100, 255))
+    text_x = 1100 // 2 - text.get_width() // 2
+    if pos[1] >= 500:
+        text_y = 100
+    else:
+        text_y = 600
+    image_instr.blit(text, (text_x, text_y))
+    image_instr.set_colorkey(color)
+    image_instr.set_alpha(192)
+
+    screen.blit(image_instr, (0, 0))
+    # pygame.display.flip()
 
 
 class Hokkey:
@@ -139,7 +194,6 @@ class Hokkey:
         mm = time_1 // 60
         time_1 %= 60
         ss = time_1 // 1
-
 
         text = font.render(
             "В игре вы провели: " + str(int(hh)) + ':' + str(int(mm)).rjust(2, '0') + ':' +
@@ -314,7 +368,104 @@ class Minesweeper(Board):
                         pygame.display.flip()
 
     def open_cell(self, pos, q):
-        pass
+        global arr, obsh_comp, obsh_igr, comp, igr, best_comp, best_igr, f_win, f_lose, f_saper
+        if q == 1:
+            if arr[pos[0]][pos[1]] == -1:
+                if f_saper == 1:
+                    f_saper = 0
+                self.opened += 1
+                x = 0
+                for i in range(pos[0] - 1, pos[0] + 2):
+                    for j in range(pos[1] - 1, pos[1] + 2):
+                        if i in range(len(arr)) and j in range(len(arr[pos[0]])) and \
+                                (arr[i][j] == 10 or arr[i][j] == -12):
+                            x += 1
+                font = pygame.font.Font(None, 30)
+                text = font.render(str(int(x)), 1, color_green)
+                text_x = pos[0] * self.cell_size + self.cell_size * 0.5 + self.left
+                text_y = pos[1] * self.cell_size + self.cell_size * 0.5 + self.top
+                screen.blit(text, (text_x, text_y))
+                pygame.display.flip()
+                arr[pos[0]][pos[1]] = 0
+                if x == 0:
+                    for i1 in range(pos[0] - 1, pos[0] + 2):
+                        for j1 in range(pos[1] - 1, pos[1] + 2):
+                            if i1 in range(0, self.width) and j1 in range(0, self.height):
+                                self.open_cell((i1, j1), 1)
+            elif arr[pos[0]][pos[1]] == 10:
+                if f_saper == 1:
+                    arr = []
+                    c = h
+                    a = b = 8
+                    for i in range(8):
+                        x = []
+                        for j in range(8):
+                            x += [-1]
+                        arr += [x]
+                    arr_1 = []
+                    for i in range(c):
+                        q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                        while (q, w) in arr_1:
+                            q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                        arr[q][w] = 10
+                        arr_1 += [(q, w)]
+                    f_saper = 1
+                    board = Minesweeper(8, 8)
+                    board.set_view(150 + 500 + 40, 80 + 40, 45)
+                    # board.render()
+                    board.open_cell(pos, 1)
+                    # print('12345')
+                else:
+                    self.fool = 1
+                    obsh_comp += 1
+                    comp += 1
+                    f_lose = 1
+                    if obsh_comp > best_comp:
+                        best_comp = obsh_comp
+                    self.drawing()
+        else:
+            if arr[pos[0]][pos[1]] == -1:
+                arr[pos[0]][pos[1]] = -2
+                # pygame.draw.rect(screen, (255, 61, 51), (
+                #     self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                #     self.cell_size, self.cell_size), 0)
+                screen.blit(image_flag, (self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1]))
+                pygame.draw.rect(screen, (20, 200, 255), (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 1)
+            elif arr[pos[0]][pos[1]] == 10:
+                arr[pos[0]][pos[1]] = -12
+                screen.blit(image_flag, (self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1]))
+                pygame.draw.rect(screen, (20, 200, 255), (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 1)
+                # pygame.draw.rect(screen, (255, 61, 51), (
+                #     self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                #     self.cell_size, self.cell_size), 0)
+                # self.opened += 1
+            elif arr[pos[0]][pos[1]] == -2:
+                arr[pos[0]][pos[1]] = -1
+                pygame.draw.rect(screen, color_pole, (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 0)
+                pygame.draw.rect(screen, (20, 200, 255), (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 1)
+            elif arr[pos[0]][pos[1]] == -12:
+                arr[pos[0]][pos[1]] = 10
+                pygame.draw.rect(screen, color_pole, (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 0)
+                pygame.draw.rect(screen, (20, 200, 255), (
+                    self.left + self.cell_size * pos[0], self.top + self.cell_size * pos[1],
+                    self.cell_size, self.cell_size), 1)
+
+        if self.opened == self.width * self.height - h:
+            obsh_igr += 1
+            igr += 1
+            f_win = 1
+            if obsh_igr > best_igr:
+                best_igr = obsh_igr
 
     def get_click(self, mouse_pos, x=1):
         cell = self.get_cell(mouse_pos)
@@ -337,14 +488,6 @@ class Minesweeper(Board):
 arr = []
 c = 8
 a = b = 8
-font1 = pygame.font.Font(None, 50)
-font2 = pygame.font.Font(None, 30)
-for i in range(8):
-    x = []
-    for j in range(8):
-        x += [-1]
-    arr += [x]
-arr_1 = []
 for i in range(c):
     q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
     while (q, w) in arr_1:
@@ -366,27 +509,58 @@ while running:
         all_sprites.update(event)
         if event.type == pygame.QUIT:
             running = False
-        if pygame.mouse.get_focused():
-            if pygame.mouse.get_pos()[0] in range(150 + 20, 150 + 500 - 20) and pygame.mouse.get_pos()[1] in \
-                    range(350 + 20, 700 - 20):
-                pos = pygame.mouse.get_pos()
-                pygame.mouse.set_visible(False)
-            else:
-                pygame.mouse.set_visible(True)
-        pygame.draw.circle(screen, (255, 61, 51), pos, 20)
-        pygame.draw.circle(screen, (255, 13, 0), pos, 10)
-        pygame.draw.circle(screen, (51, 61, 255), pos_vrag, 20)
-        pygame.draw.circle(screen, (0, 13, 255), pos_vrag, 10)
-        pos_shaiba = (pos_shaiba[0] + v_x, pos_shaiba[1] + v_y)
-        if pos_shaiba[0] > pos_vrag[0]:
-            pos_vrag = (pos_vrag[0] + abs(v_x) // 3 * 2, pos_vrag[1])
-        elif pos_shaiba[0] < pos_vrag[0]:
-            pos_vrag = (pos_vrag[0] - abs(v_x) // 3 * 2, pos_vrag[1])
-        # pos_vrag = (pos_vrag[0] + v_x // 3, pos_vrag[1])
-        pygame.draw.circle(screen, (255, 255, 0), pos_shaiba, 20)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                pass
 
-        pygame.display.flip()
-        clock.tick(24)
+            elif event.button == 3:
+                print(event.pos)
+                # board.get_click(event.pos, 1)
+                board.get_click(event.pos, 0)
+                # Bomb(all_sprites, event.pos)
+        elif event.type == pygame.KEYDOWN :
+            if event.key == 32:
+                hokkey.vozvrat()
+
+    with open('data/statistic.txt', 'w') as f1:
+        f1.write(' '.join([str(x) for x in [time, comp, igr, best_comp, best_igr, lenqth]]))
+    time += 0.04
+    n += 1
+    if f_win != 0:
+        # y_win -= 20
+        screen.blit(image_win, (150, y_win))
+        if y_win <= 350:
+            f_win = -1
+            # y_win = 700
+        if f_win == 1:
+            y_win -= 20
+        else:
+            y_win += 40
+        if y_win >= 700:
+            f_win = 0
+            y_win = 700
+    if f_lose != 0:
+        # y_lose += 20
+        screen.blit(image_lose, (150, y_lose))
+        if y_lose >= 0:
+            f_lose = -1
+            # print('a')
+            # y_lose = -350
+        if f_lose == 1:
+            y_lose += 20
+        else:
+            # print('000')
+            y_lose -= 40
+        if y_lose <= -350:
+            f_lose = 0
+            y_lose = -350
+    if n % 25 == 0:
+        n = 0
+        if pygame.mouse.get_focused():
+            lenqth += int(((pos_last[0] - pygame.mouse.get_pos()[0]) ** 2 +
+                           (pos_last[1] - pygame.mouse.get_pos()[1]) ** 2) ** 0.5)
+        pos_last = pygame.mouse.get_pos()
+        # print(lenqth // 3793)
 
     pygame.display.flip()
     clock.tick(25)
