@@ -488,6 +488,7 @@ class Minesweeper(Board):
 arr = []
 c = 8
 a = b = 8
+print(a)
 for i in range(c):
     q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
     while (q, w) in arr_1:
