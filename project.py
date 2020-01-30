@@ -277,7 +277,28 @@ class Minesweeper(Board):
             self.arr += [a]
 
     def drawing(self):
-        pass
+        global arr, pos, screen
+        if self.fool == 1:
+            for i in range(8):
+                for j in range(8):
+                    if arr[i][j] != 10:
+                        x = 0
+                        for i1 in range(pos[0] - 1, pos[0] + 2):
+                            for j1 in range(pos[1] - 1, pos[1] + 2):
+                                if i1 in range(len(arr)) and j1 in range(len(arr[0])) and \
+                                        arr[i1][j1] == 10:
+                                    x += 1
+                        font = pygame.font.Font(None, 30)
+                        text = font.render(str(int(x)), 1, (255, 255, 255))
+                        text_x = pos[0] * self.cell_size + self.cell_size * 0.5 + self.left
+                        text_y = pos[1] * self.cell_size + self.cell_size * 0.5 + self.top
+                        screen.blit(text, (text_x, text_y))
+                        pygame.display.flip()
+                    else:
+                        pygame.draw.rect(screen, (108, 52, 97), (
+                            self.left + self.cell_size * i, self.top + self.cell_size * j,
+                            self.cell_size, self.cell_size), 0)
+                        pygame.display.flip()
 
     def open_cell(self, pos, q):
         pass
