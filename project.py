@@ -38,6 +38,14 @@ class Board:
         self.top = 10
         self.cell_size = 30
 
+# настройка внешнего вида
+    def set_view(self, left, top, cell_size):
+        self.left = left
+        self.top = top
+        self.cell_size = cell_size
+
+
+
 
 class Minesweeper(Board):  # сапер
     pass
