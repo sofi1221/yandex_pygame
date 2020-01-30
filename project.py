@@ -264,7 +264,17 @@ class Board:
 
 class Minesweeper(Board):
     def __init__(self, x, y):
-        pass
+        global height, width
+        super().__init__(x, y)
+        self.x = self.y = 0
+        self.arr = []
+        self.fool = 0
+        self.opened = 0
+        for i in range(height):
+            a = []
+            for j in range(width):
+                a += [0]
+            self.arr += [a]
 
     def drawing(self):
         pass
