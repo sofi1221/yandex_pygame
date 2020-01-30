@@ -304,7 +304,12 @@ class Minesweeper(Board):
         pass
 
     def get_click(self, mouse_pos, x=1):
-        pass
+        cell = self.get_cell(mouse_pos)
+        if cell:
+            if x == 0:
+                self.open_cell(cell, x)
+            else:
+                self.open_cell(cell, x)  # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
     def get_cell(self, mouse_pos):
         pass
