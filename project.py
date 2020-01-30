@@ -74,5 +74,27 @@ while running:
         if event.type == pygame.KEYDOWN:
             returning()
     draw()
+    if pygame.mouse.get_focused():
+        if pygame.mouse.get_pos()[0] in range(150 + 20, 150 + 500 - 20) and pygame.mouse.get_pos()[1] in \
+                range(350 + 20, 700 - 20):
+            pos = pygame.mouse.get_pos()
+            pygame.mouse.set_visible(False)
+        else:
+            pygame.mouse.set_visible(True)
+    pygame.draw.circle(screen, (255, 61, 51), pos, 20)
+    pygame.draw.circle(screen, (255, 13, 0), pos, 10)
+    pygame.draw.circle(screen, (51, 61, 255), pos_vrag, 20)
+    pygame.draw.circle(screen, (0, 13, 255), pos_vrag, 10)
+    beat()
+    border()
+    gate()
+    pos_shaiba = (pos_shaiba[0] + v_x, pos_shaiba[1] + v_y)
+    if pos_shaiba[0] > pos_vrag[0]:
+        pos_vrag = (pos_vrag[0] + abs(v_x) // 3 * 2, pos_vrag[1])
+    elif pos_shaiba[0] < pos_vrag[0]:
+        pos_vrag = (pos_vrag[0] - abs(v_x) // 3 * 2, pos_vrag[1])
+    # pos_vrag = (pos_vrag[0] + v_x // 3, pos_vrag[1])
+    pygame.draw.circle(screen, (255, 255, 0), pos_shaiba, 20)
+
     pygame.display.flip()
     clock.tick(24)
