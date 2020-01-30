@@ -312,7 +312,12 @@ class Minesweeper(Board):
                 self.open_cell(cell, x)  # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
     def get_cell(self, mouse_pos):
-        pass
+        if mouse_pos[0] in range(self.left, self.left + self.height * self.cell_size) and \
+                mouse_pos[1] in range(self.top, self.top + self.width * self.cell_size):
+            return ((mouse_pos[0] - self.left) // self.cell_size,
+                    (mouse_pos[1] - self.top) // self.cell_size)
+        else:
+            return None
 
 
 # if entered == 1:
