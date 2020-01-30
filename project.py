@@ -1,8 +1,13 @@
 import pygame
 import os
 
-def load_image(name):
-    fullname = os.path.join('data', name)
-    image = pygame.image.load(fullname).convert()
-    return image
 
+with open('statistic.txt', 'rt') as f:
+    r = f.read()
+    arr = [float(x) for x in r.split()]
+    time = arr[0]
+    comp = arr[1]
+    igr = arr[2]
+    best_comp = arr[3]
+    best_igr = arr[4]
+    lenqth = arr[5]
