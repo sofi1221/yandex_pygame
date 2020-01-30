@@ -44,7 +44,15 @@ class Board:
         self.top = top
         self.cell_size = cell_size
 
-
+    def render(self):
+        for i in range(self.width):
+            for j in range(self.height):
+                pygame.draw.rect(screen, color_pole, (
+                    self.left + self.cell_size * i, self.top + self.cell_size * j,
+                    self.cell_size, self.cell_size), 0)
+                pygame.draw.rect(screen, (20, 200, 255), (
+                    self.left + self.cell_size * i, self.top + self.cell_size * j,
+                    self.cell_size, self.cell_size), 1)
 
 
 class Minesweeper(Board):  # сапер
