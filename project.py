@@ -10,14 +10,9 @@ def load_image(name):
     return image
 
 
-# инициализация Pygame:
 pygame.init()
-# размеры окна:
 size = width, height = 1100, 700
-# screen — холст, на котором нужно рисовать:
 screen = pygame.display.set_mode(size)
-color_end = (255, 255, 0)
-color_font = (255, 0, 0)
 pos = (400, 350 + 175)
 pos_vrag = (400, 175)
 pos_shaiba = (400, 350)
@@ -85,13 +80,6 @@ y_lose = -350
 all_sprites = pygame.sprite.Group()
 
 
-# формирование кадра:
-# команды рисования на холсте
-def draw():
-    screen.fill(color_end)
-    # шрифты
-    font1 = pygame.font.Font(None, 50)
-    font2 = pygame.font.Font(None, 30)
 def test(pos, r, text):
     color = (0, 255, 0)
     image_instr = pygame.Surface((1100, 700))
@@ -198,11 +186,6 @@ class Hokkey:
         image.blit(text, (5, 5))
         screen.blit(image, (text_x, text_y))
 
-    pygame.draw.rect(screen, color_font, (940, 640, 150, 50), 0)  # кнопка играть
-    text = font1.render('Играть', 1, color_end)
-    text_x = 940 + 75 - text.get_width() // 2
-    text_y = 640 + 25 - text.get_height() // 2
-    screen.blit(text, (text_x, text_y))
         font = pygame.font.Font(None, 25)
         color = color_green
         time_1 = time
@@ -212,11 +195,6 @@ class Hokkey:
         time_1 %= 60
         ss = time_1 // 1
 
-    text = font1.render('Добро пожаловать в супер новую версию ваших любимых игр!', 1, color_font)
-    text_x = width // 2 - text.get_width() // 2
-    text_y = 25
-    screen.blit(text, (text_x, text_y))
-    text_y += text.get_height() + 20
         text = font.render(
             "В игре вы провели: " + str(int(hh)) + ':' + str(int(mm)).rjust(2, '0') + ':' +
             str(int(ss)).rjust(2, '0'), 1, color)
@@ -279,19 +257,6 @@ class Hokkey:
             v_x = (-pos_vrag[0] + pos_shaiba[0]) // v
             v_y = (-pos_vrag[1] + pos_shaiba[1]) // v
 
-    text = font2.render('В данной программе вы можете играть в разные игры, при этом ваш счет всегда сохраняется.', 1,
-                        color_font)
-    text_x = width // 2 - text.get_width() // 2
-    screen.blit(text, (text_x, text_y))
-    text_y += text.get_height() + 12
-
-    sp = ['Слева и справа от стола для аэрохокея расположен счет аэрохокея и общий соответственно. Когда один ',
-          'из игроков достигнет 5 очков в аэрохокее, счет слева обновится, а на счете справа данному игроку',
-          'добавится 1 очко.', 'При победе в игре "Сапер", очко добавляется сразу в общий счет.']
-    for t in sp:
-        text = font2.render(t, 1, color_font)
-        screen.blit(text, (5, text_y))
-        text_y += text.get_height() + 12
     def kraya(self):
         global v_y, v_x
         if pos_shaiba[0] - 20 <= 150 or pos_shaiba[0] + 20 >= 150 + 500:
@@ -317,26 +282,7 @@ class Hokkey:
                             # print('igr')
                 else:
                     schet_comp += 1
-    text = font1.render('Правила игры в аэрохокей:', 1, color_font)
-    text_x = width // 2 - text.get_width() // 2
-    screen.blit(text, (text_x, text_y))
-    text_y += text.get_height() + 20
 
-    sp = ['Это спортивная игра, которая проводится на специальном столе небольших размеров с бортиками.',
-          'Суть игры весьма проста: вы должны забить максимальное количество голов в ворота противника. У вас ',
-          'будут свои ворота и клюшка красного цвета и одна шайба. Мышкой вы управляете клюшкой, ей вы ',
-          'можете отбивать шайбу. Обратите внимание, что вы  можете управлять клюшкой только на своей половине',
-          'игрового поля.']
-    for t in sp:
-        text = font2.render(t, 1, color_font)
-        screen.blit(text, (5, text_y))
-        text_y += text.get_height() + 12
-
-    text = font1.render('Правила игры в сапера:', 1, color_font)
-    text_x = width // 2 - text.get_width() // 2
-    text_y -= 20
-    screen.blit(text, (text_x, text_y))
-    text_y += text.get_height() + 20
                     if schet_comp == 5:
                         obsh_comp += 1
                         f_lose = 1
@@ -347,16 +293,6 @@ class Hokkey:
                             best_comp = obsh_comp
                 self.vozvrat()
 
-    sp = ['Перед вами поле 8х8. Сначала нажмите на произвольную клетку. Число в ячейке показывает, сколько мин ',
-          'скрыто вокруг данной клетки. Поле вокруг нее - это квадрат 3х3, в центре которого находится данная ',
-          'ячейка. Это число поможет понять, где находятся безопасные ячейки, а где находятся бомбы. Если рядом',
-          'с открытой ячейкой есть пустая клетка, то она откроется автоматически. Если вы открыли ячейку с миной,',
-          'все клетки с бомбами станут синими, а игра обновится, так как вы проиграли.',
-          'Игра продолжается до тех пор, пока вы не откроете все не заминированные ячейки.']
-    for t in sp:
-        text = font2.render(t, 1, color_font)
-        screen.blit(text, (5, text_y))
-        text_y += text.get_height() + 12
     def vozvrat(self):
         global pos, pos_vrag, pos_shaiba, v_y, v_x
         pos = (400, int(350 * 1.5))
@@ -552,7 +488,14 @@ class Minesweeper(Board):
 arr = []
 c = 8
 a = b = 8
-print(a)
+font1 = pygame.font.Font(None, 50)
+font2 = pygame.font.Font(None, 30)
+for i in range(8):
+    x = []
+    for j in range(8):
+        x += [-1]
+    arr += [x]
+arr_1 = []
 for i in range(c):
     q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
     while (q, w) in arr_1:
@@ -576,16 +519,424 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                pass
+                if x_x == 1:
+                    if event.pos[0] > width // 2:
+                        theme = 1
+                    else:
+                        theme = 0
+                    # print(theme)
+                    x_x += 1
+                elif x_x == 0:
+                    x_x += 1
+                elif x_x == 2:
+                    if event.pos[0] < width // 3:
+                        level = -1
+                    elif event.pos[0] > width // 3 * 2:
+                        level = 1
+                    else:
+                        level = 0
+                    x_x += 1
+                elif x_x == 11:  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    x_x = 3
+
+                    arr = []
+                    c = h
+                    a = b = 8
+                    for i in range(8):
+                        x = []
+                        for j in range(8):
+                            x += [-1]
+                        arr += [x]
+                    arr_1 = []
+                    for i in range(c):
+                        q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                        while (q, w) in arr_1:
+                            q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                        arr[q][w] = 10
+                        arr_1 += [(q, w)]
+                    f_saper = 1
+                    board = Minesweeper(8, 8)
+                    board.set_view(150 + 500 + 40, 80 + 40, 45)
+                    board.render()
+                elif x_x in range(5, 11):  # !!!!!!!!!!!!!!!!!!
+                    x_x += 1
+                elif x_x == 37:
+                    if event.pos[0] in range(940, 1090) and \
+                            event.pos[1] in range(640, 690):
+                        x_x = 3
+                    elif event.pos[0] in range(770, 920) and \
+                            event.pos[1] in range(640, 690):
+                        x_x = 38
+                elif x_x == 38:
+                    if event.pos[0] in range(940, 1090) and \
+                            event.pos[1] in range(640, 690):
+                        x_x = 3
+                    elif event.pos[0] in range(770, 920) and \
+                            event.pos[1] in range(640, 690):
+                        x_x = 39
+                elif x_x == 39:
+                    if event.pos[0] in range(940, 1090) and \
+                            event.pos[1] in range(640, 690):
+                        x_x = 3
+                else:
+                    if x_x == 3:
+                        x_x += 1
+                    board.get_click(event.pos)
+                    if board.opened == 8 * 8 - h:
+                        arr = []
+                        c = h
+                        a = b = 8
+                        for i in range(8):
+                            x = []
+                            for j in range(8):
+                                x += [-1]
+                            arr += [x]
+                        arr_1 = []
+                        for i in range(c):
+                            q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                            while (q, w) in arr_1:
+                                q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                            arr[q][w] = 10
+                            arr_1 += [(q, w)]
+                        f_saper = 1
+                        board = Minesweeper(8, 8)
+                        board.set_view(150 + 500 + 40, 80 + 40, 45)
+                        board.render()
+                    elif board.fool == 1:
+                        arr = []
+                        c = h
+                        a = b = 8
+                        for i in range(8):
+                            x = []
+                            for j in range(8):
+                                x += [-1]
+                            arr += [x]
+                        arr_1 = []
+                        for i in range(c):
+                            q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                            while (q, w) in arr_1:
+                                q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+                            arr[q][w] = 10
+                            arr_1 += [(q, w)]
+                        f_saper = 1
+                        board = Minesweeper(8, 8)
+                        board.set_view(150 + 500 + 40, 80 + 40, 45)
+                        board.render()
+                    elif event.pos[0] in range(980, 1100) and \
+                            event.pos[1] in range(650, 675):
+                        x_x = 5
+
+                    elif event.pos[0] in range(895, 970) and event.pos[1] in range(650, 675):
+                        x_x = 0
+
+                    elif event.pos[0] in range(725, 880) and event.pos[1] in range(650, 675):
+                        x_x = 37
 
             elif event.button == 3:
                 print(event.pos)
                 # board.get_click(event.pos, 1)
                 board.get_click(event.pos, 0)
                 # Bomb(all_sprites, event.pos)
-        elif event.type == pygame.KEYDOWN :
+        elif event.type == pygame.KEYDOWN and x_x >= 3:
             if event.key == 32:
                 hokkey.vozvrat()
+    if x_x == 1:
+        pygame.draw.rect(screen, (204, 202, 202), (0, 0, width // 2, height), 0)
+        pygame.draw.rect(screen, (87, 87, 87), (width // 2, 0, width // 2, height), 0)
+
+        font = pygame.font.Font(None, 200)
+        color = (100, 0, 100)
+
+        text = font.render("Light", 1, color)
+        text_x = width // 4 - text.get_width() // 2
+        text_y = height // 2 - text.get_height() // 2 + 50
+        image = pygame.Surface((text.get_width(), text.get_height()))
+        image.set_alpha(255)
+        pygame.draw.rect(image, (204, 202, 202), (0, 0, *text.get_size()), 0)
+        image.blit(text, (0, 0))
+        screen.blit(image, (text_x, text_y))
+
+        font = pygame.font.Font(None, 200)
+        color = (20, 200, 255)
+
+        text = font.render("Dark", 1, color)
+        text_x = width // 4 * 3 - text.get_width() // 2
+        text_y = height // 2 - text.get_height() // 2 + 50
+        image = pygame.Surface((text.get_width(), text.get_height()))
+        image.set_alpha(255)
+        pygame.draw.rect(image, (87, 87, 87), (0, 0, *text.get_size()), 0)
+        image.blit(text, (0, 0))
+        screen.blit(image, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (250, 250, 250)
+        text = font.render("Выберите цветовую тему", 1, color)
+        text_x = width // 2 - text.get_width() // 2 + 3
+        text_y = 25 + 5
+        screen.blit(text, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (50, 50, 50)
+        text = font.render("Выберите цветовую тему", 1, color)
+        text_x = width // 2 - text.get_width() // 2
+        text_y = 25
+        screen.blit(text, (text_x, text_y))
+
+    elif x_x == 2:
+        screen.fill((87, 87, 87))
+        pygame.draw.rect(screen, (204, 202, 202), (0, 0, width // 3, height), 0)
+        pygame.draw.rect(screen, (127, 127, 127), (width // 3, 0, width // 3, height), 0)
+
+        font = pygame.font.Font(None, 100)
+        color = (250, 250, 250)
+        text = font.render("Выберите уровень сложности", 1, color)
+        text_x = width // 2 - text.get_width() // 2 + 3
+        text_y = 25 + 5
+        screen.blit(text, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (50, 50, 50)
+        text = font.render("Выберите уровень сложности", 1, color)
+        text_x = width // 2 - text.get_width() // 2
+        text_y = 25
+        screen.blit(text, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (100, 255, 100)
+        text = font.render("medium", 1, color)
+        text_x = width // 2 - text.get_width() // 2
+        text_y = height // 2 - text.get_height() // 2 + 50
+        screen.blit(text, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (20, 200, 255)
+        text = font.render("hard", 1, color)
+        text_x = width // 2 - text.get_width() // 2 + width // 3
+        text_y = height // 2 - text.get_height() // 2 + 50
+        screen.blit(text, (text_x, text_y))
+
+        font = pygame.font.Font(None, 100)
+        color = (100, 0, 100)
+        text = font.render("easy", 1, color)
+        text_x = width // 2 - text.get_width() // 2 - width // 3
+        text_y = height // 2 - text.get_height() // 2 + 50
+        screen.blit(text, (text_x, text_y))
+
+    elif x_x == 3:
+        # print(3, 'theme', theme)
+        if theme == 0:
+            color_back = (204, 202, 202)
+            color_pole = (230, 230, 230)
+            color_green = (100, 0, 100)
+            image_flag = pygame.image.load('data/dark.png').convert_alpha()
+        else:
+            color_back = (57, 57, 57)
+            color_pole = (87, 87, 87)
+            color_green = (100, 255, 100)
+            # color_green = (20, 200, 255)
+            image_flag = pygame.image.load('data/light.png').convert_alpha()
+        pygame.display.set_icon(pygame.image.load('data/dark.png').convert_alpha())
+        if level == -1:
+            v = 4
+            h = 6
+        elif level == 0:
+            v = 2
+            h = 8
+        else:
+            v = 1
+            h = 10
+        screen.fill(color_back)
+        board.render()
+        hokkey.draw()
+        pygame.display.flip()
+    elif x_x == 0:
+        screen.fill((87, 87, 87))
+        font = pygame.font.Font(None, 400)
+        color = (100, 255, 100)
+
+        text = font.render("4k3s", 1, color)
+        text_x = width // 2 - text.get_width() // 2
+        text_y = height // 2 - text.get_height() // 2
+        image = pygame.Surface((text.get_width(), text.get_height()))
+        image.set_alpha(255)
+        pygame.draw.rect(image, (87, 87, 87), (0, 0, *text.get_size()), 0)
+        image.blit(text, (0, 0))
+        screen.blit(image, (text_x, text_y))
+
+        font = pygame.font.Font(None, 50)
+        color = (100, 255, 100)
+
+        text = font.render("Для продолжения нажмите на левую кнопку мыши", 1, color)
+        text_x = width // 2 - text.get_width() // 2
+        text_y = height // 10 * 9 - text.get_height() // 2
+        image = pygame.Surface((text.get_width(), text.get_height()))
+        image.set_alpha(128)
+        pygame.draw.rect(image, (87, 87, 87), (0, 0, *text.get_size()), 0)
+        image.blit(text, (0, 0))
+        screen.blit(image, (text_x, text_y))
+    elif x_x == 5:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((870, 300), 45 * 5, 'Поле сапера')
+    elif x_x == 6:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((400, 350), 350 + 50, 'Аэрохоккей')
+    elif x_x == 7:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((930, 665), 75, 'Возврат на начальную страницу')
+    elif x_x == 8:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((60, 80), 75, 'Счет компьютера')
+    elif x_x == 9:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((60, 700 - 90), 75, 'Счет игрока')
+    elif x_x == 10:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((800, 55), 150, 'Общие счета игрока и компьютера')
+    elif x_x == 11:
+        screen.fill(color_back)
+        hokkey.draw()
+        board.render()
+        test((830, 560), 150 + 30, 'Статистика')
+    elif x_x == 37:
+        screen.fill(color_back)
+
+        pygame.draw.rect(screen, color_green, (940, 640, 150, 50), 0)  # кнопка играть
+        text = font1.render('Играть', 1, color_back)
+        text_x = 940 + 75 - text.get_width() // 2
+        text_y = 640 + 25 - text.get_height() // 2
+        screen.blit(text, (text_x, text_y))
+
+        pygame.draw.rect(screen, color_green, (770, 640, 150, 50), 0)  # кнопка далее
+        text = font1.render('Далее', 1, color_back)
+        text_x = 770 + 75 - text.get_width() // 2
+        text_y = 640 + 25 - text.get_height() // 2
+        screen.blit(text, (text_x, text_y))
+
+        sp = ['Добро пожаловать', 'в супер новую версию ваших любимых игр!']
+        text_y = 35
+        for t in sp:
+            text = font1.render(t, 1, color_green)
+            text_x = width // 2 - text.get_width() // 2
+            screen.blit(text, (text_x, text_y))
+            text_y += text.get_height() + 25
+
+        text = font2.render('В данной программе вы можете играть в разные игры, при этом ваш счет всегда сохраняется.',
+                            1,
+                            color_green)
+        text_x = width // 2 - text.get_width() // 2
+        screen.blit(text, (text_x, text_y))
+        text_y += text.get_height() + 15
+
+        sp = ['Слева и справа от стола для аэрохокея расположен счет аэрохокея и общий соответственно. ',
+              'Когда один из игроков достигнет 5 очков в аэрохокее, счет слева обновится, а на счете ',
+              'справа данному игроку добавится 1 очко.',
+              'При победе в игре "Сапер", очко добавляется сразу в общий счет.',
+              'Также в правом верхнем углу (под общим счетом) указан уровень сложности и количество мин на поле.',
+              'В правой нижней части окна расположены рекорды, набранные пользователями.']
+        for t in sp:
+            text = font2.render(t, 1, color_green)
+            screen.blit(text, (30, text_y))
+            text_y += text.get_height() + 15
+
+        # следующая страница
+    elif x_x == 38:
+        screen.fill(color_back)
+
+        pygame.draw.rect(screen, color_green, (940, 640, 150, 50), 0)  # кнопка играть
+        text = font1.render('Играть', 1, color_back)
+        text_x = 940 + 75 - text.get_width() // 2
+        text_y = 640 + 25 - text.get_height() // 2
+        screen.blit(text, (text_x, text_y))
+
+        pygame.draw.rect(screen, color_green, (770, 640, 150, 50), 0)  # кнопка далее
+        text = font1.render('Далее', 1, color_back)
+        text_x = 770 + 75 - text.get_width() // 2
+        text_y = 640 + 25 - text.get_height() // 2
+        screen.blit(text, (text_x, text_y))
+
+        text_y = 35
+        text = font1.render('Правила игры в аэрохокей:', 1, color_green)
+        text_x = width // 2 - text.get_width() // 2
+        screen.blit(text, (text_x, text_y))
+        text_y += text.get_height() + 25
+
+        sp = ['Это спортивная игра, которая проводится на специальном столе небольших размеров с бортиками.',
+              'Чтобы начать игру или запустить ее повторно, нажмите на пробел.',
+              'Суть игры весьма проста: вы должны забить максимальное количество голов в ворота противника. ',
+              'У вас будут свои ворота и клюшка красного цвета и одна шайба. Мышкой вы управляете клюшкой, ей ',
+              'можно отбивать шайбу. Обратите внимание, что вы  можете управлять клюшкой только на своей ',
+              'половине игрового поля.',
+              'Противник синего цвета будет стараться забить шайбу в ваши ворота. Не дайте ему это сделать!!!']
+        for t in sp:
+            text = font2.render(t, 1, color_green)
+            screen.blit(text, (30, text_y))
+            text_y += text.get_height() + 15
+
+
+    elif x_x == 39:
+        screen.fill(color_back)
+
+        pygame.draw.rect(screen, color_green, (940, 640, 150, 50), 0)  # кнопка играть
+        text = font1.render('Играть', 1, color_back)
+        text_x = 940 + 75 - text.get_width() // 2
+        text_y = 640 + 25 - text.get_height() // 2
+        screen.blit(text, (text_x, text_y))
+
+        text_y = 35
+        text = font1.render('Правила игры в сапера:', 1, color_green)
+        text_x = width // 2 - text.get_width() // 2
+        screen.blit(text, (text_x, text_y))
+        text_y += text.get_height() + 25
+
+        sp = ['Перед вами поле 8х8. Сначала нажмите на произвольную клетку. ',
+              'Число в ячейке показывает, сколько мин скрыто вокруг данной ',
+              'клетки. Поле вокруг нее - это квадрат 3х3, в центре которого ', 'находится данная ячейка.',
+              'Это число поможет понять, где находятся безопасные ячейки, ', 'а где находятся бомбы. ',
+              'Если рядом с открытой ячейкой есть пустая клетка', '(с цифрой 0), то она откроется автоматически.',
+              'Если вы уверены в местонахождении бомбы, нажмите правой', 'клавишей мыши на данную клетку.',
+              'Поздравляем, вы поставили свой первый флажок!',
+              'Если вы открыли ячейку с миной, все клетки с бомбами станут',
+              'синими, а игра обновится, так как вы проиграли.',
+              'Игра продолжается до тех пор, пока вы не откроете все', 'не заминированные ячейки.']
+        for t in sp:
+            text = font2.render(t, 1, color_green)
+            screen.blit(text, (35, text_y))
+            text_y += text.get_height() + 15
+    else:
+        hokkey.draw()
+        if pygame.mouse.get_focused():
+            if pygame.mouse.get_pos()[0] in range(150 + 20, 150 + 500 - 20) and pygame.mouse.get_pos()[1] in \
+                    range(350 + 20, 700 - 20):
+                pos = pygame.mouse.get_pos()
+                pygame.mouse.set_visible(False)
+            else:
+                pygame.mouse.set_visible(True)
+        pygame.draw.circle(screen, (255, 61, 51), pos, 20)
+        pygame.draw.circle(screen, (255, 13, 0), pos, 10)
+        pygame.draw.circle(screen, (51, 61, 255), pos_vrag, 20)
+        pygame.draw.circle(screen, (0, 13, 255), pos_vrag, 10)
+        hokkey.otbit()
+        hokkey.kraya()
+        hokkey.vorota()
+        pos_shaiba = (pos_shaiba[0] + v_x, pos_shaiba[1] + v_y)
+        if pos_vrag[0] <= pos_shaiba[0]:
+            pos_vrag = (pos_vrag[0] + int(abs(v_x * 0.8)), pos_vrag[1])
+        else:
+            pos_vrag = (pos_vrag[0] - int(abs(v_x * 0.8)), pos_vrag[1])
+        pygame.draw.circle(screen, color_green, pos_shaiba, 20)
+        all_sprites.draw(screen)
 
     with open('data/statistic.txt', 'w') as f1:
         f1.write(' '.join([str(x) for x in [time, comp, igr, best_comp, best_igr, lenqth]]))
