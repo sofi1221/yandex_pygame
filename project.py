@@ -22,7 +22,7 @@ v_y = 0
 n = 0
 stroka = pymorphy2.MorphAnalyzer().parse('метр')[0]
 pygame.display.set_caption("4k3s")
-image_flag = pygame.image.load('dark.png').convert_alpha()
+image_flag = pygame.image.load('data/dark.png').convert_alpha()
 pygame.display.set_icon(image_flag)
 
 schet_igr = 0
@@ -633,7 +633,7 @@ while running:
                         x_x = 37
 
             elif event.button == 3:
-                print(event.pos)
+                # print(event.pos)
                 # board.get_click(event.pos, 1)
                 board.get_click(event.pos, 0)
                 # Bomb(all_sprites, event.pos)
@@ -729,12 +729,20 @@ while running:
             color_pole = (230, 230, 230)
             color_green = (100, 0, 100)
             image_flag = pygame.image.load('data/dark.png').convert_alpha()
+            image_1 = pygame.image.load('data/light_all.jpg').convert_alpha()
+            image_2 = pygame.image.load('data/light_xokkey.jpg').convert_alpha()
+            image_3 = pygame.image.load('data/light_saper.jpg').convert_alpha()
         else:
             color_back = (57, 57, 57)
             color_pole = (87, 87, 87)
             color_green = (100, 255, 100)
             # color_green = (20, 200, 255)
             image_flag = pygame.image.load('data/light.png').convert_alpha()
+            image_1 = pygame.image.load('data/dark_all.jpg').convert_alpha()
+            image_2 = pygame.image.load('data/dark_xokkey.jpg').convert_alpha()
+            image_3 = pygame.image.load('data/dark_saper.jpg').convert_alpha()
+        image_1 = pygame.transform.scale(image_1, (456, 308))
+        image_2 = pygame.transform.scale(image_2, (680 // 7 * 5, 725 // 7 * 5))
         pygame.display.set_icon(pygame.image.load('data/dark.png').convert_alpha())
         if level == -1:
             v = 4
@@ -749,6 +757,26 @@ while running:
         board.render()
         hokkey.draw()
         pygame.display.flip()
+
+        arr = []
+        c = h
+        a = b = 8
+        for i in range(8):
+            x = []
+            for j in range(8):
+                x += [-1]
+            arr += [x]
+        arr_1 = []
+        for i in range(c):
+            q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+            while (q, w) in arr_1:
+                q, w = random.choice([j for j in range(a)]), random.choice([j for j in range(b)])
+            arr[q][w] = 10
+            arr_1 += [(q, w)]
+        f_saper = 1
+        board = Minesweeper(8, 8)
+        board.set_view(150 + 500 + 40, 80 + 40, 45)
+        board.render()
     elif x_x == 0:
         screen.fill((87, 87, 87))
         font = pygame.font.Font(None, 400)
@@ -837,7 +865,7 @@ while running:
                             color_green)
         text_x = width // 2 - text.get_width() // 2
         screen.blit(text, (text_x, text_y))
-        text_y += text.get_height() + 15
+        text_y += text.get_height() + 12
 
         sp = ['Слева и справа от стола для аэрохокея расположен счет аэрохокея и общий соответственно. ',
               'Когда один из игроков достигнет 5 очков в аэрохокее, счет слева обновится, а на счете ',
@@ -848,8 +876,8 @@ while running:
         for t in sp:
             text = font2.render(t, 1, color_green)
             screen.blit(text, (30, text_y))
-            text_y += text.get_height() + 15
-
+            text_y += text.get_height() + 10
+        screen.blit(image_1, (220, 370))
         # следующая страница
     elif x_x == 38:
         screen.fill(color_back)
@@ -872,18 +900,24 @@ while running:
         screen.blit(text, (text_x, text_y))
         text_y += text.get_height() + 25
 
-        sp = ['Это спортивная игра, которая проводится на специальном столе небольших размеров с бортиками.',
-              'Чтобы начать игру или запустить ее повторно, нажмите на пробел.',
-              'Суть игры весьма проста: вы должны забить максимальное количество голов в ворота противника. ',
-              'У вас будут свои ворота и клюшка красного цвета и одна шайба. Мышкой вы управляете клюшкой, ей ',
-              'можно отбивать шайбу. Обратите внимание, что вы  можете управлять клюшкой только на своей ',
+        sp = ['Это спортивная игра, которая проводится на',
+              'специальном столе небольших размеров с бортиками.',
+              'Чтобы начать игру или запустить ее повторно,',
+              'нажмите на пробел.',
+              'Суть игры весьма проста: вы должны забить ',
+              'максимальное количество голов в ворота противника.',
+              'У вас будут свои ворота и клюшка красного цвета и',
+              ' одна шайба. Мышкой вы управляете клюшкой, ей ',
+              'можно отбивать шайбу. Обратите внимание, что вы ',
+              'можете управлять клюшкой только на своей ',
               'половине игрового поля.',
-              'Противник синего цвета будет стараться забить шайбу в ваши ворота. Не дайте ему это сделать!!!']
+              'Противник синего цвета будет стараться забить шайбу',
+              'в ваши ворота. Не дайте ему это сделать!!!']
         for t in sp:
             text = font2.render(t, 1, color_green)
             screen.blit(text, (30, text_y))
-            text_y += text.get_height() + 15
-
+            text_y += text.get_height() + 10
+        screen.blit(image_2, (600, 100))
 
     elif x_x == 39:
         screen.fill(color_back)
@@ -913,7 +947,8 @@ while running:
         for t in sp:
             text = font2.render(t, 1, color_green)
             screen.blit(text, (35, text_y))
-            text_y += text.get_height() + 15
+            text_y += text.get_height() + 10
+        screen.blit(image_3, (700, 150))
     else:
         hokkey.draw()
         if pygame.mouse.get_focused():
@@ -981,3 +1016,8 @@ while running:
     pygame.display.flip()
     clock.tick(25)
 # print(time, comp, igr)
+
+# мне нужно:
+# прибрать проект (копи-паст, переменные)
+# залить все на гитхаб
+# отправить проект
